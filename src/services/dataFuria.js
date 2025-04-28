@@ -1,119 +1,100 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+/* Mock criado pois as apis de dados de cs da furia ou outros tipos esão desatualizados */
 
-async function getFullFuriaData() {
-  const url = 'https://liquipedia.net/counterstrike/api.php';
-
-  try {
-    const res = await axios.get(url, {
-      params: {
-        action: 'parse',
-        page: 'FURIA',
-        format: 'json',
+async function getDataFuria() {
+  return {
+    team: "FURIA Esports",
+    game: "Counter-Strike 2",
+    years: {
+      "2020": {
+        lineup: ["yuurih", "KSCERATO", "arT", "HEN1", "VINI"],
+        achievements: [
+          "1st - DreamHack Open Summer NA 2020",
+          "1st - ESL Pro League Season 12 NA (invictos na fase de grupos)",
+          "Top 8 - IEM New York Online NA 2020"
+        ],
+        tournamentHistory: [
+          "IEM New York 2020 NA - Top 4",
+          "DreamHack Open Summer 2020 NA - Campeão",
+          "ESL Pro League S12 NA - Vice-campeão"
+        ],
+        majorResults: [
+          "Sem Major em 2020 (por conta da pandemia COVID-19)"
+        ]
       },
-      headers: {
-        'User-Agent': 'FURIAChatBot/1.0 (youremail@example.com)',
+      "2021": {
+        lineup: ["yuurih", "KSCERATO", "arT", "VINI", "junior"],
+        achievements: [
+          "1st - CBCS Elite League Season 2",
+          "5-8th - PGL Major Stockholm 2021"
+        ],
+        tournamentHistory: [
+          "PGL Major Stockholm 2021 - Top 8",
+          "ESL Pro League Season 13 - Top 6"
+        ],
+        majorResults: [
+          "PGL Major Stockholm 2021 - 5-8th"
+        ]
       },
-    });
-
-    const html = res.data.parse.text['*'];
-    const $ = cheerio.load(html);
-
-    const wikitable = $('.wikitable');
-    const allTextTables = [];
-
-    // Extrair todas as tabelas com texto bruto
-    wikitable.each((i, table) => {
-      const text = $(table).text().trim().replace(/\n+/g, '\n');
-      allTextTables.push(text);
-    });
-
-    // Agora você pode processar individualmente:
-    const currentLineup = extractLineupFromTable(allTextTables[0]);
-    const formerPlayers = extractFormerPlayers(allTextTables);
-    const achievements = extractAchievements(allTextTables);
-    const tournaments = extractTournaments(allTextTables);
-
-    const furiaData = {
-      team: 'FURIA',
-      game: 'CS:GO',
-      currentLineup,
-      formerPlayers,
-      tournamentHistory: tournaments,
-      achievements,
-      source: 'https://liquipedia.net/counterstrike/FURIA',
-      lastUpdated: new Date().toISOString()
-    };
-
-    return furiaData;
-
-  } catch (err) {
-    console.error('Erro ao buscar dados da FURIA:', err.message);
-  }
-}
-
-// Exemplo de função simples para extrair lineup de um texto
-function extractLineupFromTable(tableText) {
-  const lines = tableText.split('\n');
-  const players = [];
-  lines.forEach(line => {
-    if (line.includes('Brazil') || line.includes('🇧🇷')) {
-      const parts = line.split(/\s{2,}/); // quebra por espaços múltiplos
-      if (parts.length >= 2) {
-        players.push({
-          player: parts[0].trim(),
-          role: parts[1]?.trim() || 'Unknown',
-        });
+      "2022": {
+        lineup: ["yuurih", "KSCERATO", "arT", "drop", "saffee"],
+        achievements: [
+          "3-4th - IEM Rio Major 2022 (Brasil)",
+          "1st - Elisa Masters Espoo 2022"
+        ],
+        tournamentHistory: [
+          "IEM Katowice 2022 - Playoffs",
+          "PGL Antwerp Major 2022 - 5-8th",
+          "IEM Rio Major 2022 - Semifinal"
+        ],
+        majorResults: [
+          "PGL Major Antwerp 2022 - 5-8th",
+          "IEM Rio Major 2022 - 3-4th"
+        ]
+      },
+      "2023": {
+        lineup: ["yuurih", "KSCERATO", "arT", "saffee", "drop"],
+        achievements: [
+          "Top 8 - BLAST Spring Final",
+          "Classificados para IEM Cologne 2023"
+        ],
+        tournamentHistory: [
+          "BLAST.tv Paris Major 2023 - Eliminados no RMR",
+          "ESL Pro League Season 18 - Quartas de final"
+        ],
+        majorResults: [
+          "Não classificaram para o BLAST Paris Major 2023"
+        ]
+      },
+      "2024": {
+        lineup: ["yuurih", "KSCERATO", "chelo", "FalleN", "drop"],
+        achievements: [
+          "5-8th - IEM Chengdu 2024",
+          "9-11th - PGL Major Copenhagen 2024"
+        ],
+        tournamentHistory: [
+          "IEM Chengdu 2024 - Quartas de final",
+          "PGL Copenhagen Major 2024 - Top 12"
+        ],
+        majorResults: [
+          "PGL Major Copenhagen 2024 - 9-11th"
+        ]
+      },
+      "2025": {
+        lineup: ["yuurih", "KSCERATO", "chelo", "FalleN", "drop"],
+        achievements: [
+          "Convidados - IEM Dallas 2025",
+          "Convidados - BLAST Premier Spring Final 2025"
+        ],
+        tournamentHistory: [
+          "IEM Dallas 2025 (a disputar)",
+          "ESL Pro League Season 19 (classificados)"
+        ],
+        majorResults: [
+          "Nenhum Major até abril 2025 (próximo será no final do ano)"
+        ]
       }
     }
-  });
-  return players;
+  };
 }
 
-function extractFormerPlayers(tables) {
-  const former = [];
-  tables.forEach(txt => {
-    if (txt.includes('Former')) {
-      const lines = txt.split('\n');
-      lines.forEach(l => {
-        if (l.includes('Brazil') || l.includes('🇧🇷')) {
-          former.push(l.trim());
-        }
-      });
-    }
-  });
-  return former;
-}
-
-function extractAchievements(tables) {
-  const list = [];
-  tables.forEach(txt => {
-    if (txt.includes('Placement') || txt.includes('Prize')) {
-      const lines = txt.split('\n');
-      lines.forEach(l => {
-        if (/\$\d+/.test(l)) {
-          list.push(l.trim());
-        }
-      });
-    }
-  });
-  return list;
-}
-
-function extractTournaments(tables) {
-  const list = [];
-  tables.forEach(txt => {
-    if (txt.includes('Tournament') && txt.includes('Result')) {
-      const lines = txt.split('\n');
-      lines.forEach(l => {
-        if (/\d+(st|nd|rd|th)/.test(l)) {
-          list.push(l.trim());
-        }
-      });
-    }
-  });
-  return list;
-}
-
-
-module.exports = getFullFuriaData
+module.exports = getDataFuria;

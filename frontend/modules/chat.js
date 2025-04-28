@@ -1,48 +1,24 @@
+import { ChatPost } from "../assets/api/chatAPI";
+import { formatText } from "../assets/js/formatText";
+
 export async function enviarMensagem() {
   const input = document.getElementById('userInput');
   const mensagem = input.value;
+  input.value = '';
+
   const chatBox = document.getElementById('chatBox');
 
-  try {
-    // Recupera o contexto ou inicia com um array vazio
-    let contexto = [];
-    const contextoBruto = sessionStorage.getItem("context");
-    if (contextoBruto) {
-      try {
-        contexto = JSON.parse(contextoBruto);
-      } catch (e) {
-        console.warn("Contexto inválido no sessionStorage, resetando...", e);
-        sessionStorage.removeItem("context");
-        contexto = [];
-      }
-    }
-
-    // Envia a mensagem e o contexto para o backend
-    const resposta = await fetch('/api/mensagem', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ message: mensagem, context: contexto })
-    });
-
-    const json = await resposta.json();
-
-    if (resposta.ok) {
-      // Atualiza o contexto com a nova troca de mensagens
-      contexto.push({ user: mensagem, chatBot: json.response });      
-      sessionStorage.setItem("context", JSON.stringify(contexto));
-
-      // Atualiza a interface
-      chatBox.innerHTML += `<p><strong>Você:</strong> ${mensagem}</p>`;
-      chatBox.innerHTML += `<p><strong>FURIA Bot:</strong> ${json.response}</p>`;
-    } else {
-      chatBox.innerHTML += `<p><strong>Erro:</strong> ${json.message}</p>`;
-    }
-  } catch (erro) {
-    console.error('Erro ao enviar mensagem:', erro);
-    chatBox.innerHTML += `<p><strong>Erro:</strong> Algo deu errado ao se comunicar com o servidor.</p>`;
+  chatBox.innerHTML += `<p><strong>Você:</strong> ${mensagem}</p>`;
+  
+  let resposta = await ChatPost(mensagem);
+  
+  // Verifique se a resposta contém o campo 'response' e se é uma string
+  if (resposta.response && typeof resposta.response === 'string') {
+    console.log(resposta.response);
+    resposta.response = formatText(resposta.response);
+    chatBox.innerHTML += `<p><strong>FURIA Bot:</strong> ${resposta.response}</p>`;
+  } else {
+    // Caso não seja string, exibe um erro ou trata de acordo
+    chatBox.innerHTML += `<p><strong>Erro:</strong> ${resposta.message || 'Resposta inválida'}</p>`;
   }
-
-  input.value = '';
 }
