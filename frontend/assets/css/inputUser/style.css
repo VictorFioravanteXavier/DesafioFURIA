@@ -1,0 +1,40 @@
+
+footer {
+    width: 100%;
+    bottom: 0;
+    background-color: #232124;
+    padding: 10px;
+}
+
+input{
+    background-color: transparent;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+img {
+    width: 1.4rem;
+
+}
+
+.container-input{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #9CA3AF;
+    background-color: #F2F2F2;
+    border-radius: 50px;
+    padding: 0.5rem;
+    overflow: hidden;
+}
