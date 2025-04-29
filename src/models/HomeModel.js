@@ -13,4 +13,4 @@ class Home {
 
 /* module.exports = HomeModule; */
 
-module.exports = Home // assim que se faz isso
+module.exports = Home

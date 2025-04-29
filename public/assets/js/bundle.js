@@ -43,42 +43,77 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addMenssage: () => (/* binding */ addMenssage)
 /* harmony export */ });
-/* harmony import */ var _getHours__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getHours */ "./frontend/assets/js/getHours.js");
+/* harmony import */ var _decodeHtml__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./decodeHtml */ "./frontend/assets/js/decodeHtml.js");
+/* harmony import */ var _getHours__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getHours */ "./frontend/assets/js/getHours.js");
+
 
 function addMenssage(menssage, type) {
   const chatBox = document.getElementById('chatBox');
-  const chatMain = document.getElementById('chatMain'); // <- Seleciona a MAIN agora
-  const hours = (0,_getHours__WEBPACK_IMPORTED_MODULE_0__.getHours)();
-  if (typeof type === 'string' && type === 'user') {
-    chatBox.innerHTML += `
-            <div class="dialog-user">
-                <div class="box-user">
-                    ${menssage}
-                </div>
-                <div class="time">
-                    ${hours}
-                </div>
-            </div>
-        `;
-    setTimeout(() => {
-      chatMain.scrollTop = chatMain.scrollHeight;
-    }, 0);
+  const chatMain = document.getElementById('chatMain');
+  const typingLoader = document.getElementById('typingLoader');
+  const hours = (0,_getHours__WEBPACK_IMPORTED_MODULE_1__.getHours)();
+  if (type === 'user') {
+    const div_dialog = document.createElement('div');
+    div_dialog.classList.add('dialog-user');
+    const div_box = document.createElement('div');
+    div_box.classList.add('box-user');
+    div_box.innerHTML = menssage;
+    const div_time = document.createElement('div');
+    div_time.classList.add('time');
+    div_time.innerHTML = hours;
+    div_dialog.appendChild(div_box);
+    div_dialog.appendChild(div_time);
+    chatBox.insertBefore(div_dialog, typingLoader);
+    chatMain.scrollTop = chatMain.scrollHeight;
   }
-  if (typeof type === 'string' && type === 'bot') {
-    chatBox.innerHTML += `
-            <div class="dialog-bot">
-                <div class="box-bot">
-                    ${menssage}
-                </div>
-                <div class="time">
-                    ${hours}
-                </div>
-            </div>
-        `;
+  if (type === 'bot') {
+    typingLoader.classList.remove('hidden');
+    chatMain.scrollTop = chatMain.scrollHeight;
     setTimeout(() => {
-      chatMain.scrollTop = chatMain.scrollHeight;
-    }, 0);
+      typingLoader.classList.add('hidden');
+      const div_dialog = document.createElement('div');
+      div_dialog.classList.add('dialog-bot');
+      const div_box = document.createElement('div');
+      div_box.classList.add('box-bot');
+      const div_time = document.createElement('div');
+      div_time.classList.add('time');
+      div_time.innerHTML = hours;
+      div_dialog.appendChild(div_box);
+      div_dialog.appendChild(div_time);
+      chatBox.insertBefore(div_dialog, typingLoader);
+
+      // 🔍 Decodifica o HTML antes de digitar
+      const plainText = (0,_decodeHtml__WEBPACK_IMPORTED_MODULE_0__.decodeHTML)(menssage);
+      let index = 0;
+      const typingInterval = setInterval(() => {
+        div_box.textContent += plainText.charAt(index);
+        index++;
+        chatMain.scrollTop = chatMain.scrollHeight;
+        if (index >= plainText.length) {
+          clearInterval(typingInterval);
+        }
+      }, 35); // velocidade de digitação
+    }, 1000); // tempo de "pensando"
   }
+}
+
+/***/ }),
+
+/***/ "./frontend/assets/js/decodeHtml.js":
+/*!******************************************!*\
+  !*** ./frontend/assets/js/decodeHtml.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   decodeHTML: () => (/* binding */ decodeHTML)
+/* harmony export */ });
+function decodeHTML(htmlString) {
+  const temp = document.createElement('div');
+  temp.innerHTML = htmlString;
+  return temp.textContent || temp.innerText || "";
 }
 
 /***/ }),
@@ -128,6 +163,28 @@ function getHours() {
 
 /***/ }),
 
+/***/ "./frontend/assets/js/loader.js":
+/*!**************************************!*\
+  !*** ./frontend/assets/js/loader.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   hideLoader: () => (/* binding */ hideLoader),
+/* harmony export */   showLoader: () => (/* binding */ showLoader)
+/* harmony export */ });
+const loader = document.getElementById('typingLoader');
+function showLoader() {
+  loader.classList.remove('hidden');
+}
+function hideLoader() {
+  loader.classList.add('hidden');
+}
+
+/***/ }),
+
 /***/ "./frontend/modules/chat.js":
 /*!**********************************!*\
   !*** ./frontend/modules/chat.js ***!
@@ -142,6 +199,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/api/chatAPI */ "./frontend/assets/api/chatAPI.js");
 /* harmony import */ var _assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/js/addMenssageFront */ "./frontend/assets/js/addMenssageFront.js");
 /* harmony import */ var _assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/js/formatText */ "./frontend/assets/js/formatText.js");
+/* harmony import */ var _assets_js_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/js/loader */ "./frontend/assets/js/loader.js");
+
 
 
 
@@ -151,12 +210,19 @@ async function enviarMensagem() {
   input.value = '';
   const chatBox = document.getElementById('chatBox');
   (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(mensagem, 'user');
-  let resposta = await (0,_assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__.ChatPost)(mensagem);
-  if (resposta.response && typeof resposta.response === 'string') {
-    resposta.response = (0,_assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__.formatText)(resposta.response);
-    (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.response, 'bot');
-  } else {
-    (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.message, 'bot');
+  (0,_assets_js_loader__WEBPACK_IMPORTED_MODULE_3__.showLoader)();
+  try {
+    let resposta = await (0,_assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__.ChatPost)(mensagem);
+    if (resposta.response && typeof resposta.response === 'string') {
+      resposta.response = (0,_assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__.formatText)(resposta.response);
+      (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.response, 'bot');
+    } else {
+      (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.message, 'bot');
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    (0,_assets_js_loader__WEBPACK_IMPORTED_MODULE_3__.hideLoader)();
   }
 }
 
