@@ -32,6 +32,44 @@ async function ChatPost(mensagem) {
 
 /***/ }),
 
+/***/ "./frontend/assets/js/addMenssageFront.js":
+/*!************************************************!*\
+  !*** ./frontend/assets/js/addMenssageFront.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addMenssage: () => (/* binding */ addMenssage)
+/* harmony export */ });
+/* harmony import */ var _getHours__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getHours */ "./frontend/assets/js/getHours.js");
+
+function addMenssage(menssage, type) {
+  const chatBox = document.getElementById('chatBox');
+  const chatMain = document.getElementById('chatMain'); // <- Seleciona a MAIN agora
+  const hours = (0,_getHours__WEBPACK_IMPORTED_MODULE_0__.getHours)();
+  if (typeof type === 'string' && type === 'user') {
+    chatBox.innerHTML += `
+            <div class="dialog-user">
+                <div class="box-user">
+                    ${menssage}
+                </div>
+                <div class="time">
+                    ${hours}
+                </div>
+            </div>
+        `;
+
+    // Scrolla a MAIN, não o chatBox
+    setTimeout(() => {
+      chatMain.scrollTop = chatMain.scrollHeight;
+    }, 0);
+  }
+}
+
+/***/ }),
+
 /***/ "./frontend/assets/js/formatText.js":
 /*!******************************************!*\
   !*** ./frontend/assets/js/formatText.js ***!
@@ -57,6 +95,26 @@ function removeHTML(text) {
 
 /***/ }),
 
+/***/ "./frontend/assets/js/getHours.js":
+/*!****************************************!*\
+  !*** ./frontend/assets/js/getHours.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getHours: () => (/* binding */ getHours)
+/* harmony export */ });
+function getHours() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+/***/ }),
+
 /***/ "./frontend/modules/chat.js":
 /*!**********************************!*\
   !*** ./frontend/modules/chat.js ***!
@@ -69,7 +127,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   enviarMensagem: () => (/* binding */ enviarMensagem)
 /* harmony export */ });
 /* harmony import */ var _assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/api/chatAPI */ "./frontend/assets/api/chatAPI.js");
-/* harmony import */ var _assets_js_formatText__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/js/formatText */ "./frontend/assets/js/formatText.js");
+/* harmony import */ var _assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/js/addMenssageFront */ "./frontend/assets/js/addMenssageFront.js");
+/* harmony import */ var _assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/js/formatText */ "./frontend/assets/js/formatText.js");
+
 
 
 async function enviarMensagem() {
@@ -77,13 +137,13 @@ async function enviarMensagem() {
   const mensagem = input.value;
   input.value = '';
   const chatBox = document.getElementById('chatBox');
-  chatBox.innerHTML += `<p><strong>Você:</strong> ${mensagem}</p>`;
+  (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(mensagem, 'user');
   let resposta = await (0,_assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__.ChatPost)(mensagem);
 
   // Verifique se a resposta contém o campo 'response' e se é uma string
   if (resposta.response && typeof resposta.response === 'string') {
     console.log(resposta.response);
-    resposta.response = (0,_assets_js_formatText__WEBPACK_IMPORTED_MODULE_1__.formatText)(resposta.response);
+    resposta.response = (0,_assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__.formatText)(resposta.response);
     chatBox.innerHTML += `<p><strong>FURIA Bot:</strong> ${resposta.response}</p>`;
   } else {
     // Caso não seja string, exibe um erro ou trata de acordo

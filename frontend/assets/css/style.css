@@ -5,6 +5,8 @@
 
 html, body {
     height: 100%;
+    overflow: hidden; 
+
 }
 
 body {
@@ -14,5 +16,6 @@ body {
 }
 
 main {
-    flex: 1; /* ocupa todo o espaço restante entre header e footer */
+    overflow-y: auto;   
+    flex-grow: 1; 
 }

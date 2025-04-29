@@ -1,4 +1,5 @@
 import { ChatPost } from "../assets/api/chatAPI";
+import { addMenssage } from "../assets/js/addMenssageFront";
 import { formatText } from "../assets/js/formatText";
 
 export async function enviarMensagem() {
@@ -8,7 +9,7 @@ export async function enviarMensagem() {
 
   const chatBox = document.getElementById('chatBox');
 
-  chatBox.innerHTML += `<p><strong>Você:</strong> ${mensagem}</p>`;
+  addMenssage(mensagem, 'user')
   
   let resposta = await ChatPost(mensagem);
   
