@@ -8,7 +8,7 @@ Para configurar e rodar o projeto localmente, siga os passos abaixo:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO>
+    git clone https://github.com/VictorFioravanteXavier/desafio_FURIA.git
     cd DesafioFuria
     ```
 2.  **Instale as dependências:**
