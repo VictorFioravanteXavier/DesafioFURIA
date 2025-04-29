@@ -55,6 +55,11 @@ Em outro:
 npm run dev
 ```
 
+## Como Usar
+Após seguir os passos de configuração e rodar a aplicação, acesse a interface web no seu navegador. Este projeto funciona como um chatbot especializado em Furia CS.
+
+Você poderá interagir com o chatbot fazendo perguntas sobre a equipe Furia no Counter-Strike, seus jogadores, partidas, estatísticas, história, e outros tópicos relacionados. Digite sua pergunta na caixa de texto e envie para receber uma resposta especializada.
+
 ## Estrutura do Projeto
 A estrutura principal do projeto é organizada da seguinte forma:
 ```
