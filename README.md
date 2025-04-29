@@ -81,7 +81,11 @@ A estrutura principal do projeto é organizada da seguinte forma:
 
 ### Tecnologias Principais
 Backend: Node.js, Express.js
+
 Frontend: EJS (templates), JavaScript, CSS
+
 Banco de Dados: MongoDB, Mongoose (ODM)
+
 Build Tools: Webpack, Babel
+
 Outras: Axios, Cheerio, bcryptjs, connect-flash, express-session, marked, validator, etc.
