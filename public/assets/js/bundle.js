@@ -60,8 +60,21 @@ function addMenssage(menssage, type) {
                 </div>
             </div>
         `;
-
-    // Scrolla a MAIN, não o chatBox
+    setTimeout(() => {
+      chatMain.scrollTop = chatMain.scrollHeight;
+    }, 0);
+  }
+  if (typeof type === 'string' && type === 'bot') {
+    chatBox.innerHTML += `
+            <div class="dialog-bot">
+                <div class="box-bot">
+                    ${menssage}
+                </div>
+                <div class="time">
+                    ${hours}
+                </div>
+            </div>
+        `;
     setTimeout(() => {
       chatMain.scrollTop = chatMain.scrollHeight;
     }, 0);
@@ -139,15 +152,11 @@ async function enviarMensagem() {
   const chatBox = document.getElementById('chatBox');
   (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(mensagem, 'user');
   let resposta = await (0,_assets_api_chatAPI__WEBPACK_IMPORTED_MODULE_0__.ChatPost)(mensagem);
-
-  // Verifique se a resposta contém o campo 'response' e se é uma string
   if (resposta.response && typeof resposta.response === 'string') {
-    console.log(resposta.response);
     resposta.response = (0,_assets_js_formatText__WEBPACK_IMPORTED_MODULE_2__.formatText)(resposta.response);
-    chatBox.innerHTML += `<p><strong>FURIA Bot:</strong> ${resposta.response}</p>`;
+    (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.response, 'bot');
   } else {
-    // Caso não seja string, exibe um erro ou trata de acordo
-    chatBox.innerHTML += `<p><strong>Erro:</strong> ${resposta.message || 'Resposta inválida'}</p>`;
+    (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_1__.addMenssage)(resposta.message, 'bot');
   }
 }
 

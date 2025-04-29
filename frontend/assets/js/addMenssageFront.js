@@ -21,4 +21,22 @@ export function addMenssage(menssage, type) {
             chatMain.scrollTop = chatMain.scrollHeight;
         }, 0);
     }
+
+
+    if (typeof type === 'string' && type === 'bot') {
+        chatBox.innerHTML += `
+            <div class="dialog-bot">
+                <div class="box-bot">
+                    ${menssage}
+                </div>
+                <div class="time">
+                    ${hours}
+                </div>
+            </div>
+        `;
+
+        setTimeout(() => {
+            chatMain.scrollTop = chatMain.scrollHeight;
+        }, 0);
+    }
 }

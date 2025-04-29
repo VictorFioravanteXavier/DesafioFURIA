@@ -17,11 +17,30 @@ p {
     align-self: flex-end;
 }
 
+.dialog-bot{
+    width: fit-content;
+    align-self: flex-start;
+}
+
 .box-user {
     max-width: 20rem;
     width: fit-content;
     
     background-color: #E35E33;
+    color: #fff;
+
+    border-radius: 1rem;
+    padding: 0.6rem;
+
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.box-bot {
+    max-width: 20rem;
+    width: fit-content;
+    
+    background-color: #232124;
     color: #fff;
 
     border-radius: 1rem;

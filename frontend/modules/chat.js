@@ -13,13 +13,10 @@ export async function enviarMensagem() {
   
   let resposta = await ChatPost(mensagem);
   
-  // Verifique se a resposta contém o campo 'response' e se é uma string
   if (resposta.response && typeof resposta.response === 'string') {
-    console.log(resposta.response);
     resposta.response = formatText(resposta.response);
-    chatBox.innerHTML += `<p><strong>FURIA Bot:</strong> ${resposta.response}</p>`;
+    addMenssage(resposta.response, 'bot')
   } else {
-    // Caso não seja string, exibe um erro ou trata de acordo
-    chatBox.innerHTML += `<p><strong>Erro:</strong> ${resposta.message || 'Resposta inválida'}</p>`;
+    addMenssage(resposta.message, 'bot')
   }
 }
