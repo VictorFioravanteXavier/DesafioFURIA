@@ -28,40 +28,37 @@ export function addMenssage(menssage, type) {
     }
 
     if (type === 'bot') {
-        typingLoader.classList.remove('hidden');
+
+        typingLoader.classList.add('hidden');
+
+        const div_dialog = document.createElement('div');
+        div_dialog.classList.add('dialog-bot');
+
+        const div_box = document.createElement('div');
+        div_box.classList.add('box-bot');
+
+        const div_time = document.createElement('div');
+        div_time.classList.add('time');
+        div_time.innerHTML = hours;
+
+        div_dialog.appendChild(div_box);
+        div_dialog.appendChild(div_time);
+        chatBox.insertBefore(div_dialog, typingLoader);
+
+        // 🔍 Decodifica o HTML antes de digitar
+        const plainText = decodeHTML(menssage);
+        let index = 0;
+
+        const typingInterval = setInterval(() => {
+            div_box.textContent += plainText.charAt(index);
+            index++;
+
+
+            if (index >= plainText.length) {
+                clearInterval(typingInterval);
+            }
+        }, 35); // velocidade de digitação
+
         chatMain.scrollTop = chatMain.scrollHeight;
-
-        setTimeout(() => {
-            typingLoader.classList.add('hidden');
-
-            const div_dialog = document.createElement('div');
-            div_dialog.classList.add('dialog-bot');
-
-            const div_box = document.createElement('div');
-            div_box.classList.add('box-bot');
-
-            const div_time = document.createElement('div');
-            div_time.classList.add('time');
-            div_time.innerHTML = hours;
-
-            div_dialog.appendChild(div_box);
-            div_dialog.appendChild(div_time);
-            chatBox.insertBefore(div_dialog, typingLoader);
-
-            // 🔍 Decodifica o HTML antes de digitar
-            const plainText = decodeHTML(menssage);
-            let index = 0;
-
-            const typingInterval = setInterval(() => {
-                div_box.textContent += plainText.charAt(index);
-                index++;
-
-                chatMain.scrollTop = chatMain.scrollHeight;
-
-                if (index >= plainText.length) {
-                    clearInterval(typingInterval);
-                }
-            }, 35); // velocidade de digitação
-        }, 1000); // tempo de "pensando"
     }
 }
