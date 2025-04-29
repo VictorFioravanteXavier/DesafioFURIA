@@ -28,8 +28,11 @@ Para configurar e rodar o projeto localmente, siga os passos abaixo:
     Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias (por exemplo, string de conexão do MongoDB, chaves de API, etc.).
 
     CONNECTIONSTRING = "mongodb://localhost:27017/your-database-name"
+
     appName="DesafioFuria"
+    
     SECRET_KEY = "your-secret-key"
+    
     GOOGLE_GEMINI_API_KEY = "your-google-gemini-api-key"
 
 
