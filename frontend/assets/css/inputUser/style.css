@@ -9,6 +9,12 @@ footer {
     background-color: #FAFAFA;
 
     border-top: 1px solid #E5E7EB;
+    gap: 1rem;
+}
+
+footer i {
+    font-size: 1.2rem;
+    transform: rotate(-45deg); /* Rotaciona 45 graus */
 }
 
 input{
@@ -34,7 +40,7 @@ input{
 }
 
 img {
-    width: 1.4rem;
+    flex: 1;
     &::placeholder{
         color: #E5E7EB;
     }
