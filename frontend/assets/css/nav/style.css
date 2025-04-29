@@ -1,3 +1,55 @@
 nav {
-    background-color: #212529;
+    background-color: #232124;
+}
+
+.logo-container {
+    padding: 10px;
+    background-color: #E35E33;
+    border-radius: 10px;
+}
+
+.logo-container img {
+    width: 30px;
+    height: 30px;
+}
+
+.title-nav {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 25px;
+    margin-right: auto;
+}
+
+.title-nav a {
+    color: #F2F2F2;
+    font-size: 1rem;
+}
+
+.title-nav p {
+    color: #E35E33;
+    font-size: 0.87rem;
+}
+
+.custom-toggler-dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.custom-toggler-dots span {
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    display: block;
+}
+
+.selected {
+    color: #E35E33 !important;
+    text-decoration: underline;
 }

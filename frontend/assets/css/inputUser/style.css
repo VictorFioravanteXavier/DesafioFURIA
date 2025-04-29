@@ -39,11 +39,8 @@ input{
     justify-content: center;
 }
 
-img {
+#enviarBtn img {
     flex: 1;
-    &::placeholder{
-        color: #E5E7EB;
-    }
 }
 
 .container-input{

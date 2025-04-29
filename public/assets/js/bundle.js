@@ -24235,10 +24235,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _modules_chat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/chat */ "./frontend/modules/chat.js");
+/* harmony import */ var _assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/js/addMenssageFront */ "./frontend/assets/js/addMenssageFront.js");
+
 
 
 
 document.getElementById("enviarBtn").addEventListener('click', _modules_chat__WEBPACK_IMPORTED_MODULE_2__.enviarMensagem);
+document.getElementById('userInput').addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    (0,_modules_chat__WEBPACK_IMPORTED_MODULE_2__.enviarMensagem)();
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const mensagemBoasVindas = `
+    <p>Olá! 👋 Eu sou o assistente da <strong>FURIA Esports</strong> no <strong>Counter-Strike 2</strong>!</p>
+    <p>Estou aqui para te ajudar com informações sobre a história, jogadores, partidas e conquistas da FURIA no CS.</p>
+    <p>Você pode me perguntar, por exemplo:</p>
+    <ul>
+      <li>🧠 Quem são os jogadores atuais da FURIA?</li>
+      <li>🏆 Quais foram os títulos mais importantes que a FURIA venceu?</li>
+      <li>📊 Como foi o desempenho da FURIA no último campeonato?</li>
+      <li>🔄 Quando houve mudanças na line-up da equipe?</li>
+      <li>🗓️ Qual foi o melhor ano da FURIA no CS até agora?</li>
+    </ul>
+    <p>É só mandar sua pergunta que eu respondo rapidinho! 🚀</p>
+    `;
+  (0,_assets_js_addMenssageFront__WEBPACK_IMPORTED_MODULE_3__.addMenssage)(mensagemBoasVindas, 'bot');
+});
 })();
 
 /******/ })()
