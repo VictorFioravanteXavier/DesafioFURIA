@@ -84,13 +84,10 @@ A estrutura principal do projeto é organizada da seguinte forma:
 └── vercel.json       # Configuração para deploy no Vercel (se aplicável).
 ```
 
-### Tecnologias Principais
-Backend: Node.js, Express.js
-
-Frontend: EJS (templates), JavaScript, CSS
-
-Banco de Dados: MongoDB, Mongoose (ODM)
-
-Build Tools: Webpack, Babel
-
-Outras: Axios, Cheerio, bcryptjs, connect-flash, express-session, marked, validator, etc.
+## Tecnologias Principais
+- Backend: Node.js, Express.js
+- Frontend: EJS (templates), JavaScript, CSS
+- Banco de Dados: MongoDB, Mongoose (ODM)
+- API: Google Gemini API
+- Build Tools: Webpack, Babel
+- Outras: Axios, Cheerio, bcryptjs, connect-flash, express-session, marked, validator, etc.
