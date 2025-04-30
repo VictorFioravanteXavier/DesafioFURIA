@@ -1,6 +1,6 @@
 /* Mock criado pois as apis de dados de cs da furia ou outros tipos esão desatualizados */
 
-async function getDataFuria() {
+exports.getDataFuriaCs = async function () {
   return {
     team: "FURIA Esports",
     game: "Counter-Strike 2",
@@ -97,4 +97,42 @@ async function getDataFuria() {
   };
 }
 
-module.exports = getDataFuria;
+exports.getFuriaResumoCs = async function () {
+  let furiaData;
+
+  try {
+    furiaData = await exports.getDataFuriaCs();
+  } catch (error) {
+    console.error('Erro ao carregar dados da FURIA:', error.message);
+    return res.status(500).json({ message: 'Erro ao buscar dados da FURIA.' });
+  }
+
+  if (!furiaData) {
+    return res.status(500).json({ message: 'Dados da FURIA não disponíveis.' });
+  }
+
+  furiaResumo = `
+            Time: ${furiaData.team}
+            Jogo: ${furiaData.game}
+            
+            Histórico Completo:
+            
+            ${Object.entries(furiaData.years).map(([year, data]) => `
+            Ano ${year}:
+            
+            Lineup:
+            ${data.lineup.map(player => `- ${player}`).join('\n')}
+            
+            Conquistas:
+            ${data.achievements.length > 0 ? data.achievements.map(a => `- ${a}`).join('\n') : '- Nenhuma conquista registrada'}
+            
+            Torneios Disputados:
+            ${data.tournamentHistory.length > 0 ? data.tournamentHistory.map(t => `- ${t}`).join('\n') : '- Nenhum torneio registrado'}
+            
+            Resultados em Majors:
+            ${data.majorResults.length > 0 ? data.majorResults.map(m => `- ${m}`).join('\n') : '- Sem participação em Majors'}
+            `).join('\n')}
+        `;
+
+  return furiaResumo;
+}
